@@ -8,7 +8,7 @@ function formatQueryParams(params) {
 
 function getGoogleApi(searchTerm) {
     //Googlebooks api
-    console.log(searchTerm)
+    console.log(searchTerm);
     const keyGoogle = 'AIzaSyA8VKI7V3csSpGGiqz2bNyjEOzaTzn30Tc';
     const googleURL = 'https://www.googleapis.com/books/v1/volumes';
     const params = {
@@ -22,13 +22,42 @@ function getGoogleApi(searchTerm) {
     fetch(url)
         .then(response => {
             if (response.ok) {
-                return response.json()
+                return response.json();
             }
-            throw new Error(response.statusText)
+            throw new Error(response.statusText);
         })
         .then(responseJson => displayImages(responseJson))
         .catch(err => {
             $('.mainbook').text(`Something went wrong: ${err.message}`);
+        });
+}
+
+function getTasteApi(searchTerm) {
+    //Get TasteDiveApi
+    console.log(searchTerm);
+    const keyTaste = '323255-booksapi-QJEP8SJ8';
+    const tasteURL = 'https://tastedive.com/api/similar';
+    const params = {
+        k: keyTaste,
+        type: 'books',
+        q: searchTerm,
+        limit: 8,
+        info: 1
+    }
+    const queryString = formatQueryParams(params);
+    const url = `${tasteURL}?${queryString}`;
+    console.log(url);
+
+    fetch(url)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error(response.statusText);
+        })
+        .then(responseJson => displayImages(responseJson))
+        .catch(err => {
+            $('.matchbook').text(`Something went wrong: ${err.message}`);
         });
 }
 
