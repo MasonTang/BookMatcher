@@ -30,6 +30,9 @@ function getGoogleApi(searchTerm) {
             throw new Error(response.statusText);
         })
         .then(responseJson => displayImages(responseJson))
+        .then(() => {
+            for(let i = 0; i < bookData.length; i++){
+            getGoogleTasteApi(bookData[i])}})
         .catch(err => {
             $('.mainbook').text(`Something went wrong: ${err.message}`);
         });
@@ -61,24 +64,28 @@ function getTasteApi(searchTerm) {
             for (let i = 0; i < booksName.length; i++){
                 bookData.push(booksName[i].Name)
             }
-            displayTasteImages(responseJson);
-            $('.matchbook').append(bookData);
+            getGoogleApi(searchTerm);
         }
     });
 }
+
+//run a for loop outside of getGoogleTasteApi
 
 function getGoogleTasteApi(bookData) {
     //Googlebooks api
     console.log(bookData);
     const keyGoogle = 'AIzaSyA8VKI7V3csSpGGiqz2bNyjEOzaTzn30Tc';
     const googleURL = 'https://www.googleapis.com/books/v1/volumes';
+    
     const params = {
-        q: bookData.forEach(book => book),
+        q: bookData,
         key: keyGoogle
     }
+       
+    console.log(params);
     const queryString = formatQueryParams(params);
     const url = `${googleURL}?${queryString}`;
-    console.log(url)
+    console.log(url);
 
     fetch(url)
         .then(response => {
@@ -108,20 +115,25 @@ function displayImages(responseJson) {
 }
 
 function displayTasteImages(responseJson){
-    $('.matchbook').empty();
-    const bookTitle = responseJson.Similar.Info[0].Name;
-    $('.matchbook').text(bookTitle);   
+    
+    
+    const bookImage = responseJson.items[0].volumeInfo.imageLinks.smallThumbnail;
+    const bookTitle = responseJson.items[0].volumeInfo.title;
+    const displayImage = $('<img>',
+        {
+            class: 'matchbook-img',
+            src: bookImage,
+            alt: bookTitle
+        })
+        .appendTo($('.matchbook'))
+    console.log(displayImage)  
 }
 
 function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
         const searchTerm = $('.search-input-js').val();
-        console.log(searchTerm);
         getTasteApi(searchTerm);
-        getGoogleApi(searchTerm);
-        getGoogleTasteApi(bookData);
-        console.log(bookData);
     })
 }
 
