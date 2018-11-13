@@ -1,5 +1,8 @@
 'use strict';
 
+let bookData = [];
+//responseJson.Similar.Results[i].name
+
 function formatQueryParams(params) {
     const queryItems = Object.keys(params)
         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`);
@@ -34,7 +37,6 @@ function getGoogleApi(searchTerm) {
 
 function getTasteApi(searchTerm) {
     //Get TasteDiveApi
-    console.log(searchTerm);
     const keyTaste = '323255-booksapi-QJEP8SJ8';
     const tasteURL = 'https://tastedive.com/api/similar';
     const params = {
@@ -46,7 +48,37 @@ function getTasteApi(searchTerm) {
     }
     const queryString = formatQueryParams(params);
     const url = `${tasteURL}?${queryString}`;
+    
     console.log(url);
+
+    $.ajax({
+        dataType: "jsonp",
+        url: url,
+        data: queryString,
+        success: function(responseJson){
+            //displayTasteImages(searchTerm)
+            const booksName = responseJson.Similar.Results;
+            for (let i = 0; i < booksName.length; i++){
+                bookData.push(booksName[i].Name)
+            }
+            displayTasteImages(responseJson);
+            $('.matchbook').append(bookData);
+        }
+    });
+}
+
+function getGoogleTasteApi(bookData) {
+    //Googlebooks api
+    console.log(bookData);
+    const keyGoogle = 'AIzaSyA8VKI7V3csSpGGiqz2bNyjEOzaTzn30Tc';
+    const googleURL = 'https://www.googleapis.com/books/v1/volumes';
+    const params = {
+        q: bookData.forEach(book => book),
+        key: keyGoogle
+    }
+    const queryString = formatQueryParams(params);
+    const url = `${googleURL}?${queryString}`;
+    console.log(url)
 
     fetch(url)
         .then(response => {
@@ -55,9 +87,9 @@ function getTasteApi(searchTerm) {
             }
             throw new Error(response.statusText);
         })
-        .then(responseJson => displayImages(responseJson))
+        .then(responseJson => displayTasteImages(responseJson))
         .catch(err => {
-            $('.matchbook').text(`Something went wrong: ${err.message}`);
+            $('.mainbook').text(`Something went wrong: ${err.message}`);
         });
 }
 
@@ -65,7 +97,7 @@ function displayImages(responseJson) {
     $('.mainbook').empty();
     const bookImage = responseJson.items[0].volumeInfo.imageLinks.smallThumbnail;
     const bookTitle = responseJson.items[0].volumeInfo.title;
-    const displayImage = $('<img />',
+    const displayImage = $('<img>',
         {
             id: 'mainbook-img',
             src: bookImage,
@@ -75,12 +107,21 @@ function displayImages(responseJson) {
     console.log(displayImage)
 }
 
+function displayTasteImages(responseJson){
+    $('.matchbook').empty();
+    const bookTitle = responseJson.Similar.Info[0].Name;
+    $('.matchbook').text(bookTitle);   
+}
+
 function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
         const searchTerm = $('.search-input-js').val();
         console.log(searchTerm);
+        getTasteApi(searchTerm);
         getGoogleApi(searchTerm);
+        getGoogleTasteApi(bookData);
+        console.log(bookData);
     })
 }
 
