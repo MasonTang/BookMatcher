@@ -5,9 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/lightbox.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/popup.css" />
 </head>
 <body>
+
+   
+
     <main>
 
         <section class="search">
@@ -24,12 +29,58 @@
         </section>
 
         <section class="matchbook">
-
+            
         </section>
     </main>
-    
+
+<h4>Text-based:</h4>
+<div id="inline-popups">
+    <a href="#test-popup" data-effect="mfp-zoom-in"><img src="https://www.popsci.com/sites/popsci.com/files/styles/1000_1x_/public/images/2018/08/oak-tree-2018822_1920.jpg?itok=b3r2FhB5&fc=50,50" width="100" alt="">
+    </a>
+</div>
+
+<!-- Popup itself -->
+<div id="test-popup" class="white-popup mfp-with-anim mfp-hide">
+    <img class="test-popup-img" src="https://i.amz.mshcdn.com/C9zK312NjY7n2SNEzTRCErsJ0tQ=/950x534/filters:quality(90)/https%3A%2F%2Fblueprint-api-production.s3.amazonaws.com%2Fuploads%2Fcard%2Fimage%2F782032%2F44e33672-4339-426b-a2e9-22e78a700e00.jpg"
+        alt="">
+
+    <div class="test-popup-title">
+        
+    </div>
+
+    <div class="test-popup-summary">
+        
+    </div>
+
+    <div class="test-popup-review">
+        
+    </div>
+
+    <div class="test-popup-amazon">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore ullam inventore ducimus temporibus! Odio dicta
+        porro, illo aspernatur mollitia ullam placeat inventore blanditiis adipisci, repellat, assumenda asperiores.
+        Laborum, harum expedita.
+    </div>
+
+</div>
+
+
+
+<!--jquery-->
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>
+
+<!--lightbox-->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
+<!--lightbox-2-->
+
+<script src="lightbox.js"></script>
+
+<!--main-->
+
 <script src="main.js"></script>
 </body>
 </html>

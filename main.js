@@ -30,9 +30,11 @@ function getGoogleApi(searchTerm) {
             throw new Error(response.statusText);
         })
         .then(responseJson => displayImages(responseJson))
+        //cancel out the second then when you don't need it.
         .then(() => {
             for(let i = 0; i < bookData.length; i++){
-            getGoogleTasteApi(bookData[i])}})
+            getGoogleTasteApi(bookData[i], i)}  
+          console.log(bookData)})
         .catch(err => {
             $('.mainbook').text(`Something went wrong: ${err.message}`);
         });
@@ -40,13 +42,13 @@ function getGoogleApi(searchTerm) {
 
 function getTasteApi(searchTerm) {
     //Get TasteDiveApi
-    const keyTaste = '323255-booksapi-QJEP8SJ8';
+    const keyTaste = '323255-booksapi-OHI8K83G'; 
     const tasteURL = 'https://tastedive.com/api/similar';
     const params = {
         k: keyTaste,
         type: 'books',
         q: searchTerm,
-        limit: 8,
+        limit: 1,
         info: 1
     }
     const queryString = formatQueryParams(params);
@@ -71,12 +73,12 @@ function getTasteApi(searchTerm) {
 
 //run a for loop outside of getGoogleTasteApi
 
-function getGoogleTasteApi(bookData) {
+function getGoogleTasteApi(bookData,index) {
     //Googlebooks api
     console.log(bookData);
     const keyGoogle = 'AIzaSyA8VKI7V3csSpGGiqz2bNyjEOzaTzn30Tc';
     const googleURL = 'https://www.googleapis.com/books/v1/volumes';
-    
+    const uniqueId= index;
     const params = {
         q: bookData,
         key: keyGoogle
@@ -94,7 +96,7 @@ function getGoogleTasteApi(bookData) {
             }
             throw new Error(response.statusText);
         })
-        .then(responseJson => displayTasteImages(responseJson))
+        .then(responseJson => displayTasteImages(responseJson, uniqueId))
         .catch(err => {
             $('.mainbook').text(`Something went wrong: ${err.message}`);
         });
@@ -104,30 +106,43 @@ function displayImages(responseJson) {
     $('.mainbook').empty();
     const bookImage = responseJson.items[0].volumeInfo.imageLinks.smallThumbnail;
     const bookTitle = responseJson.items[0].volumeInfo.title;
-    const displayImage = $('<img>',
-        {
-            id: 'mainbook-img',
-            src: bookImage,
-            alt: bookTitle
-        })
-        .appendTo($('.mainbook'))
-    console.log(displayImage)
+    const displayImage = `<div id="inline-popups">
+        <a href="#test-popup" data-effect="mfp-zoom-in">
+        <img src=${bookImage} width="100" alt=${bookTitle}>
+        </a>
+        </div>`;
+    $(displayImage).appendTo($('.mainbook'));
+    lightbox();
+    //textPopup();
+    console.log(displayImage);
 }
 
-function displayTasteImages(responseJson){
-    
-    
+function displayTasteImages(responseJson, uniqueId){
+    //comment out the if statement to see what is causing the problem
+    bookData = [];
+    if( $('.matchbook-img').length > 0 ){
+        $('.matchbook').empty();
+    }
+
     const bookImage = responseJson.items[0].volumeInfo.imageLinks.smallThumbnail;
     const bookTitle = responseJson.items[0].volumeInfo.title;
-    const displayImage = $('<img>',
-        {
-            class: 'matchbook-img',
-            src: bookImage,
-            alt: bookTitle
-        })
-        .appendTo($('.matchbook'))
+    const displayImage =
+            $('<img>',
+            {
+                class: 'matchbook-img',
+                id: uniqueId,
+                src: bookImage,
+                alt: bookTitle
+            })
+            .appendTo($('.matchbook'))
     console.log(displayImage)  
 }
+/*
+function textPopup(){
+    $('.test-popup-img').attr('src',`${bookImage}`);
+    $('.test-popup-title').text(bookTitle);
+}
+*/
 
 function watchForm() {
     $('form').submit(event => {
