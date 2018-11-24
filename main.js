@@ -27,7 +27,6 @@ function getTasteApi(searchTerm) {
     const url = `${tasteURL}?${queryString}`;
 
     
-
     $.ajax({
         dataType: "jsonp",
         url: url,
@@ -90,13 +89,12 @@ function getGoogleApi(searchTerm) {
 
 //run a for loop outside of getGoogleTasteApi
 
-function getGoogleTasteApi(bookData,index,searchTerm) {
+function getGoogleTasteApi(bookData,searchTerm) {
     //Googlebooks api
    
     
     const keyGoogle = 'AIzaSyA8VKI7V3csSpGGiqz2bNyjEOzaTzn30Tc';
     const googleURL = 'https://www.googleapis.com/books/v1/volumes';
-    const uniqueId= index;
     const params = {
         q: bookData,
         key: keyGoogle
@@ -116,7 +114,7 @@ function getGoogleTasteApi(bookData,index,searchTerm) {
         })
         .then(responseJson => {
             
-            displayTasteImages(responseJson, uniqueId);
+            displayTasteImages(responseJson,searchTerm);
         
             bookInfo[bookInfo.length] = {
                 bookImage: responseJson.items[0].volumeInfo.imageLinks.smallThumbnail,
@@ -163,17 +161,18 @@ function displayImages(responseJson,searchTerm) {
   
 }
 
-function displayTasteImages(responseJson, uniqueId,searchTerm){
+function displayTasteImages(responseJson, searchTerm){
     //comment out the if statement to see what is causing the problem
     bookData = [];
-    
+    let bookInfoIndex = bookInfo.length 
     
     const bookImage = responseJson.items[0].volumeInfo.imageLinks.smallThumbnail;
     const bookTitle = responseJson.items[0].volumeInfo.title;
 
+
     const displayImage = `<div class="inline-popups">
         <a href="#test-popup" data-effect="mfp-zoom-in">
-        <img src=${bookImage} width="100" alt=${bookTitle} id=${uniqueId} class="match-book-img">
+        <img src=${bookImage} width="100" alt=${bookTitle} id=${bookInfoIndex} class="match-book-img">
         </a>
         </div>`;
 
@@ -213,8 +212,9 @@ function watchForm() {
     })
     $(".matchbook").on("click", "a > img", event => {
         let bookId = $(event.currentTarget).attr('id');
+        let bookalt = $(event.currentTarget).attr('alt');
         //console.log(responseJson)
-        console.log(bookId, "bookId");
+        console.log(bookId, "bookId", bookalt);
         lightbox();
         textPopup(bookId);
         getAmazonApi(searchTerm);
