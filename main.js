@@ -66,11 +66,14 @@ function getGoogleApi(searchTerm) {
             //display search term book image
             displayImages(responseJson,searchTerm);
             //activates lightbox when clicked
-            $(".mainbook").on("click", "img", event => {
-                getAmazonApi(searchTerm);
-                firstTextPopup(responseJson);
-                firstLightbox();
-            })
+            firstTextPopup(responseJson);
+            firstLightbox();
+            // $(".mainbook").on("click", "a", event => {
+            //     console.log('clicked');
+            //     event.preventDefault();
+            //     firstTextPopup(responseJson);
+            //     firstLightbox();
+            // })
         })
         .then(() => {
         if (bookData.length === 0) {
@@ -121,7 +124,7 @@ function getGoogleTasteApi(bookData,searchTerm) {
                 bookTitle: responseJson.items[0].volumeInfo.title,
                 bookDescription: responseJson.items[0].volumeInfo.description,
                 averageRating: responseJson.items[0].volumeInfo.averageRating,
-                amazonURL: getAmazonApi(searchTerm)
+                amazonURL: getAmazonApi(responseJson.items[0].volumeInfo.title)
             }
             //console.log(bookInfo)
         })
@@ -154,7 +157,8 @@ function displayImages(responseJson,searchTerm) {
         <img src=${bookImage} width="100" alt=${bookTitle}>
         </a>
         </div>`;
-    $(displayImage).appendTo($('.mainbook'));
+    $('.mainbook').append(displayImage);
+    //$(displayImage).appendTo($('.mainbook'));
     // lightbox();
     // textPopup(responseJson, searchTerm);
     // getAmazonApi(searchTerm);
@@ -185,8 +189,7 @@ function firstTextPopup(responseJson, searchTerm){
     const bookTitle = responseJson.items[0].volumeInfo.title;
     const bookDescription = responseJson.items[0].volumeInfo.description;
     const averageRating = responseJson.items[0].volumeInfo.averageRating;
-    getAmazonApi(searchTerm);
-    const amazonURL = getAmazonApi(searchTerm);
+    const amazonURL = getAmazonApi(bookTitle);
 
     $('.test-popup-img').attr('src',`${bookImage}`);
     $('.test-popup-title').html(`<h1>${bookTitle}</h1>`);
@@ -210,11 +213,11 @@ function watchForm() {
         searchTerm = $('.search-input-js').val();
         getTasteApi(searchTerm);
     })
-    $(".matchbook").on("click", "a > img", event => {
+    $(".matchbook").on("mouseenter","img", event => {
+        
         let bookId = $(event.currentTarget).attr('id');
-        let bookalt = $(event.currentTarget).attr('alt');
         //console.log(responseJson)
-        console.log(bookId, "bookId", bookalt);
+        console.log(bookId)
         lightbox();
         textPopup(bookId);
         getAmazonApi(searchTerm);

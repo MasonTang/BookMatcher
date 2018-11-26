@@ -1,5 +1,5 @@
 // Inline popups
-function firstLightbox(uniqueID) {
+function firstLightbox() {
     $('#inline-popups').magnificPopup({
         delegate: 'a',
         removalDelay: 500, //delay removal by X to allow out-animation
@@ -12,15 +12,19 @@ function firstLightbox(uniqueID) {
     });
 }
 
-function lightbox(uniqueID){
-$('.inline-popups').magnificPopup({
-    delegate: 'a',
-    removalDelay: 500, //delay removal by X to allow out-animation
-    callbacks: {
-        beforeOpen: function () {
-            this.st.mainClass = this.st.el.attr('data-effect');
-        }
-    },
-    midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
-});
+function lightbox(){
+    $('.inline-popups').magnificPopup({
+        delegate: 'a',
+        removalDelay: 500, //delay removal by X to allow out-animation
+        callbacks: {
+            beforeOpen: function () {
+                this.st.mainClass = this.st.el.attr('data-effect');
+                console.log('hi')
+            },
+            elementParse: function(item) {
+                console.log('Popup is opened');
+            }    
+        },
+        midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+    });
 }
