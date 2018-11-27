@@ -1,0 +1,20 @@
+.input-size{
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    background-color:rgba(196, 198, 199, 0.8 );
+    color: rgb(24, 24, 23);
+    font-size: 1.5rem;
+    border: 1px solid black;
+
+    &:hover {
+        background-color: rgba(212, 215, 216, 0.8);
+        border: 1px solid white;
+    }
+}
+
+.submit{
+    padding: 1rem 5rem;
+    margin-top: 2rem;
+    border-radius: 1rem;
+    cursor: pointer;
+}

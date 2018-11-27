@@ -68,12 +68,7 @@ function getGoogleApi(searchTerm) {
             //activates lightbox when clicked
             firstTextPopup(responseJson);
             firstLightbox();
-            // $(".mainbook").on("click", "a", event => {
-            //     console.log('clicked');
-            //     event.preventDefault();
-            //     firstTextPopup(responseJson);
-            //     firstLightbox();
-            // })
+            
         })
         .then(() => {
         if (bookData.length === 0) {
@@ -94,8 +89,6 @@ function getGoogleApi(searchTerm) {
 
 function getGoogleTasteApi(bookData,searchTerm) {
     //Googlebooks api
-   
-    
     const keyGoogle = 'AIzaSyA8VKI7V3csSpGGiqz2bNyjEOzaTzn30Tc';
     const googleURL = 'https://www.googleapis.com/books/v1/volumes';
     const params = {
@@ -135,7 +128,6 @@ function getGoogleTasteApi(bookData,searchTerm) {
 
 function getAmazonApi(searchTerm){
     //Amazonlink
-   
     const AmazonURL = 'https://www.amazon.com/s/ref=nb_sb_noss_1';
     const params = {
          url: 'search-alias%3Dstripbooks',
@@ -148,33 +140,27 @@ function getAmazonApi(searchTerm){
 }
 
 function displayImages(responseJson,searchTerm) {
-   
+
     $('.mainbook').empty();
     const bookImage = responseJson.items[0].volumeInfo.imageLinks.smallThumbnail;
     const bookTitle = responseJson.items[0].volumeInfo.title;
-    const displayImage = `<div id="inline-popups">
+    const displayImage = `<div id="inline-popups" class="center">
         <a href="#test-popup" data-effect="mfp-zoom-in">
-        <img src=${bookImage} width="100" alt=${bookTitle}>
+        <img class="main-img" src=${bookImage} width="100" alt=${bookTitle}>
         </a>
         </div>`;
     $('.mainbook').append(displayImage);
-    //$(displayImage).appendTo($('.mainbook'));
-    // lightbox();
-    // textPopup(responseJson, searchTerm);
-    // getAmazonApi(searchTerm);
-  
+   
 }
 
 function displayTasteImages(responseJson, searchTerm){
-    //comment out the if statement to see what is causing the problem
+    //
     bookData = [];
     let bookInfoIndex = bookInfo.length 
     
     const bookImage = responseJson.items[0].volumeInfo.imageLinks.smallThumbnail;
     const bookTitle = responseJson.items[0].volumeInfo.title;
-
-
-    const displayImage = `<div class="inline-popups">
+    const displayImage = `<div class="inline-popups center">
         <a href="#test-popup" data-effect="mfp-zoom-in">
         <img src=${bookImage} width="100" alt=${bookTitle} id=${bookInfoIndex} class="match-book-img">
         </a>
@@ -191,20 +177,19 @@ function firstTextPopup(responseJson, searchTerm){
     const averageRating = responseJson.items[0].volumeInfo.averageRating;
     const amazonURL = getAmazonApi(bookTitle);
 
-    $('.test-popup-img').attr('src',`${bookImage}`);
-    $('.test-popup-title').html(`<h1>${bookTitle}</h1>`);
-    $('.test-popup-description').html(`<h2>Book Summary</h2>${bookDescription}`);
-    $('.test-popup-averageRating').html(`<h2>Average Rating on Google Reviews: ${averageRating}/5</h2>`);
-    $('.test-popup-amazon').html(`<h2><a href="${amazonURL}" target="_blank">Buy on Amazon</a></h2>`);
+   
+    $('.test-popup-title').html(`<h2>${bookTitle}</h2>`);
+    $('.test-popup-description').html(`<h3>Book Summary</h3>${bookDescription}`);
+    $('.test-popup-averageRating').html(`<h4>Average Rating on Google Reviews: ${averageRating}/5</h4>`);
+    $('.test-popup-amazon').html(`<h3><a href="${amazonURL}" target="_blank">Buy on Amazon</a></h3>`);
 }
 
 function textPopup(index){
     console.log(index)
-    $('.test-popup-img').attr('src',`${bookInfo[index].bookImage}`);
-    $('.test-popup-title').html(`<h1>${bookInfo[index].bookTitle}</h1>`);
-    $('.test-popup-description').html(`<h2>Book Summary</h2>${bookInfo[index].bookDescription}`);
-    $('.test-popup-averageRating').html(`<h2>Average Rating on Google Reviews: ${bookInfo[index].averageRating}/5</h2>`);
-    $('.test-popup-amazon').html(`<h2><a href="${bookInfo[index].amazonURL}" target="_blank">Buy on Amazon</a></h2>`);
+    $('.test-popup-title').html(`<h2>${bookInfo[index].bookTitle}</h2>`);
+    $('.test-popup-description').html(`<h3>Book Summary</h3>${bookInfo[index].bookDescription}`);
+    $('.test-popup-averageRating').html(`<h4>Average Rating on Google Reviews: ${bookInfo[index].averageRating}/5</h4>`);
+    $('.test-popup-amazon').html(`<h3><a href="${bookInfo[index].amazonURL}" target="_blank">Buy on Amazon</a></h3>`);
 }
 
 function watchForm() {
@@ -214,10 +199,7 @@ function watchForm() {
         getTasteApi(searchTerm);
     })
     $(".matchbook").on("mouseenter","img", event => {
-        
         let bookId = $(event.currentTarget).attr('id');
-        //console.log(responseJson)
-        console.log(bookId)
         lightbox();
         textPopup(bookId);
         getAmazonApi(searchTerm);

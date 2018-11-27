@@ -12,8 +12,17 @@ body {
 	line-height: 1.7;
 	color: black;
 	box-sizing:border-box;
+	background-color: black;
 }
 
 html {
 	font-size: 62.5%;
+
+	@include respond(tablet){		
+		font-size: 70%;
+	}
+
+	@include respond(desktop){		
+		font-size: 80%;
+	}
 }

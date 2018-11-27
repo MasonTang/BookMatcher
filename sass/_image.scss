@@ -1,0 +1,32 @@
+.main-img{
+    width: 50%;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+
+    @include respond(tablet){
+        width: 40%;
+    }
+
+    @include respond(desktop){
+        width: vh;
+    }
+}
+
+.inline-popups{
+    
+    @include respond(tablet){
+        display:flex;
+    }
+}
+
+.match-book-img{
+    width: 30%;
+    padding-bottom: 1rem;
+
+    @include respond(tablet){
+        display:flex;
+        width: 50%;
+    }
+   
+    
+}
