@@ -160,7 +160,7 @@ function displayTasteImages(responseJson, searchTerm){
     
     const bookImage = responseJson.items[0].volumeInfo.imageLinks.smallThumbnail;
     const bookTitle = responseJson.items[0].volumeInfo.title;
-    const displayImage = `<div class="inline-popups center">
+    const displayImage = `<div class="inline-popups">
         <a href="#test-popup" data-effect="mfp-zoom-in">
         <img src=${bookImage} width="100" alt=${bookTitle} id=${bookInfoIndex} class="match-book-img">
         </a>

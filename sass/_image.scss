@@ -4,18 +4,29 @@
     padding-bottom: 1rem;
 
     @include respond(tablet){
-        width: 40%;
+        width: 35%;
     }
 
     @include respond(desktop){
-        width: vh;
+        width: 20%;
     }
 }
 
 .inline-popups{
+    text-align:center;
+
+    @include respond(tablet){
+        text-align: left;
+    }
+}
+
+.matchbook{
     
     @include respond(tablet){
         display:flex;
+        width: 100%;
+        flex-wrap:wrap;
+        justify-content: space-around;
     }
 }
 
@@ -25,7 +36,9 @@
 
     @include respond(tablet){
         display:flex;
-        width: 50%;
+        width: 20rem;
+        padding: 1rem 1rem;
+        
     }
    
     
