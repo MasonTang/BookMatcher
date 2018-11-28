@@ -20,7 +20,7 @@ function getTasteApi(searchTerm) {
         k: keyTaste,
         type: 'books',
         q: searchTerm,
-        limit: 3,
+        limit: 6,
         info: 1
     }
     const queryString = formatQueryParams(params);
