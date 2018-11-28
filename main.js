@@ -86,7 +86,6 @@ function getGoogleApi(searchTerm) {
 }
 
 //run a for loop outside of getGoogleTasteApi
-
 function getGoogleTasteApi(bookData,searchTerm) {
     //Googlebooks api
     const keyGoogle = 'AIzaSyA8VKI7V3csSpGGiqz2bNyjEOzaTzn30Tc';
@@ -119,7 +118,6 @@ function getGoogleTasteApi(bookData,searchTerm) {
                 averageRating: responseJson.items[0].volumeInfo.averageRating,
                 amazonURL: getAmazonApi(responseJson.items[0].volumeInfo.title)
             }
-            //console.log(bookInfo)
         })
         .catch(err => {
             $('.mainbook').text(`Something went wrong: ${err.message}`);
@@ -139,7 +137,8 @@ function getAmazonApi(searchTerm){
     return url;
 }
 
-function displayImages(responseJson,searchTerm) {
+//display first book Images
+function displayImages(responseJson) {
 
     $('.mainbook').empty();
     const bookImage = responseJson.items[0].volumeInfo.imageLinks.smallThumbnail;
@@ -153,7 +152,8 @@ function displayImages(responseJson,searchTerm) {
    
 }
 
-function displayTasteImages(responseJson, searchTerm){
+//displays recommended book Images 
+function displayTasteImages(responseJson){
     //
     bookData = [];
     let bookInfoIndex = bookInfo.length 
@@ -169,9 +169,8 @@ function displayTasteImages(responseJson, searchTerm){
     $(displayImage).appendTo($('.matchbook'));
 }
 
-//responseJson will only pick up the last responseJson item and that is why it displays the last book 
+//lightbox for the first book image
 function firstTextPopup(responseJson, searchTerm){
-    const bookImage = responseJson.items[0].volumeInfo.imageLinks.smallThumbnail;
     const bookTitle = responseJson.items[0].volumeInfo.title;
     const bookDescription = responseJson.items[0].volumeInfo.description;
     const averageRating = responseJson.items[0].volumeInfo.averageRating;
@@ -184,6 +183,7 @@ function firstTextPopup(responseJson, searchTerm){
     $('.test-popup-amazon').html(`<h3><a href="${amazonURL}" target="_blank">Buy on Amazon</a></h3>`);
 }
 
+//lightbox for the recommended book image
 function textPopup(index){
     console.log(index)
     $('.test-popup-title').html(`<h2>${bookInfo[index].bookTitle}</h2>`);
@@ -192,12 +192,14 @@ function textPopup(index){
     $('.test-popup-amazon').html(`<h3><a href="${bookInfo[index].amazonURL}" target="_blank">Buy on Amazon</a></h3>`);
 }
 
+
 function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
         searchTerm = $('.search-input-js').val();
         getTasteApi(searchTerm);
     })
+    //when the recommended bookimage is hovered over, it grabs the id for lightbox
     $(".matchbook").on("mouseenter","img", event => {
         let bookId = $(event.currentTarget).attr('id');
         lightbox();
