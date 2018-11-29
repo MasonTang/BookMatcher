@@ -1,10 +1,11 @@
 'use strict';
 //recommended book names
 let bookData = [];
+//recommended googlebooks json info
 let bookInfo = [];
 let searchTerm = [];
 
-//format url
+//format url for googlebooks, tastedive 
 function formatQueryParams(params) {
     const queryItems = Object.keys(params)
         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`);
@@ -26,13 +27,12 @@ function getTasteApi(searchTerm) {
     const queryString = formatQueryParams(params);
     const url = `${tasteURL}?${queryString}`;
 
-    
+    //pushes the recommended book name the the array bookData
     $.ajax({
         dataType: "jsonp",
         url: url,
         data: queryString,
         success: function (responseJson) {
-            //displayTasteImages(searchTerm)
             const booksName = responseJson.Similar.Results;
             for (let i = 0; i < booksName.length; i++) {
                 bookData.push(booksName[i].Name)
@@ -66,15 +66,17 @@ function getGoogleApi(searchTerm) {
             //display search term book image
             displayImages(responseJson,searchTerm);
             //activates lightbox when clicked
-            firstLightbox();
-            firstTextPopup(responseJson);
-            
-            
+            //mouseenter fixes the bug when the recommended book is clicked and the mainbook is clicked
+            $(".mainbook").on("mouseenter", "img", event => {
+                firstLightbox();
+                firstTextPopup(responseJson);
+            })
         })
         .then(() => {
         if (bookData.length === 0) {
             return $('.matchbook').text("We don't have the recommended book at this time.")
         }   
+        //takes the recommended book names and uses googlebooks api to get json information
         for(let i = 0; i < bookData.length; i++){
             $('.matchbook').text("")
             getGoogleTasteApi(bookData[i], i);
@@ -109,9 +111,9 @@ function getGoogleTasteApi(bookData,searchTerm) {
             throw new Error(response.statusText);
         })
         .then(responseJson => {
-            
+            //displays recommended book information
             displayTasteImages(responseJson,searchTerm);
-        
+            //adds the recommended book google api data to the array bookInfo
             bookInfo[bookInfo.length] = {
                 bookImage: responseJson.items[0].volumeInfo.imageLinks.smallThumbnail,
                 bookTitle: responseJson.items[0].volumeInfo.title,
@@ -125,8 +127,8 @@ function getGoogleTasteApi(bookData,searchTerm) {
         });
 }
 
+//Amazon link
 function getAmazonApi(searchTerm){
-    //Amazonlink
     const AmazonURL = 'https://www.amazon.com/s/ref=nb_sb_noss_1';
     const params = {
          url: 'search-alias%3Dstripbooks',
@@ -155,10 +157,9 @@ function displayImages(responseJson) {
 
 //displays recommended book Images 
 function displayTasteImages(responseJson){
-    //
     bookData = [];
+
     let bookInfoIndex = bookInfo.length 
-    
     const bookImage = responseJson.items[0].volumeInfo.imageLinks.smallThumbnail;
     const bookTitle = responseJson.items[0].volumeInfo.title;
     const displayImage = `<div class="inline-popups">
@@ -197,6 +198,7 @@ function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
         searchTerm = $('.search-input-js').val();
+        //takes the search term and is inputed into getTasteApi which gets the recommended books.
         getTasteApi(searchTerm);
     })
     //when the recommended bookimage is hovered over, it grabs the id for lightbox
