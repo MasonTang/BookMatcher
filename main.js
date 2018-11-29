@@ -66,8 +66,9 @@ function getGoogleApi(searchTerm) {
             //display search term book image
             displayImages(responseJson,searchTerm);
             //activates lightbox when clicked
-            firstTextPopup(responseJson);
             firstLightbox();
+            firstTextPopup(responseJson);
+            
             
         })
         .then(() => {
@@ -170,7 +171,7 @@ function displayTasteImages(responseJson){
 }
 
 //lightbox for the first book image
-function firstTextPopup(responseJson, searchTerm){
+function firstTextPopup(responseJson){
     const bookTitle = responseJson.items[0].volumeInfo.title;
     const bookDescription = responseJson.items[0].volumeInfo.description;
     const averageRating = responseJson.items[0].volumeInfo.averageRating;
@@ -185,7 +186,6 @@ function firstTextPopup(responseJson, searchTerm){
 
 //lightbox for the recommended book image
 function textPopup(index){
-    console.log(index)
     $('.test-popup-title').html(`<h2>${bookInfo[index].bookTitle}</h2>`);
     $('.test-popup-description').html(`<h3>Book Summary</h3>${bookInfo[index].bookDescription}`);
     $('.test-popup-averageRating').html(`<h4>Average Rating on Google Reviews: ${bookInfo[index].averageRating}/5</h4>`);
