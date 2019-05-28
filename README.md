@@ -8,6 +8,10 @@ https://masontang.github.io/BookMatcher/
 
 ## Landing Page
 ![Search](img/bookmatcher1.png)
+
+## Books Recommendation Page
 ![Books](img/bookmatcher2.png)
+
+## Books Information Page
 ![Information](img/bookmatcher3.png)
 
