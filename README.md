@@ -5,3 +5,9 @@ BookMatcher is a website that allows users to input a book name and the website 
 
 ## Website Link
 https://masontang.github.io/BookMatcher/
+
+## Landing Page
+![Search](img/bookmatcher1.png)
+![Books](img/bookmatcher2.png)
+![Information](img/bookmatcher3.png)
+
